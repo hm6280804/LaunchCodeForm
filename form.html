@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Stunning Login</title>
+<style>
+  :root{
+    --bg1: #0f172a;
+    --bg2: #071329;
+    --card: rgba(255,255,255,0.04);
+    --glass: rgba(255,255,255,0.06);
+    --accent1: #7c3aed; /* violet */
+    --accent2: #06b6d4; /* teal */
+    --muted: rgba(255,255,255,0.72);
+    --glass-border: rgba(255,255,255,0.06);
+    --success: #10b981;
+  }
+
+  /* page */
+  html,body{
+    height:100%;
+    margin:0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(12, 34, 56, 0.6), transparent),
+                radial-gradient(900px 500px at 90% 90%, rgba(20, 8, 40, 0.55), transparent),
+                linear-gradient(180deg,var(--bg1), var(--bg2));
+    color: white;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:32px;
+    box-sizing:border-box;
+  }
+
+  /* container */
+  .login-wrap{
+    width:100%;
+    max-width:440px;
+    border-radius:18px;
+    padding:28px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    box-shadow:
+      0 10px 30px rgba(2,6,23,0.6),
+      inset 0 1px 0 rgba(255,255,255,0.02);
+    border: 1px solid var(--glass-border);
+    position:relative;
+    overflow:hidden;
+    backdrop-filter: blur(6px) saturate(120%);
+  }
+
+  /* soft gradient ribbon */
+  .login-wrap::before{
+    content:"";
+    position:absolute;
+    left:-40%;
+    top:-30%;
+    width:200%;
+    height:120%;
+    background: linear-gradient(120deg, rgba(124,58,237,0.14), rgba(6,182,212,0.10), rgba(16,185,129,0.08));
+    transform: rotate(-14deg);
+    filter: blur(44px);
+    pointer-events:none;
+  }
+
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:18px;
+  }
+
+  .logo{
+    width:56px;
+    height:56px;
+    border-radius:12px;
+    display:grid;
+    place-items:center;
+    background: linear-gradient(135deg,var(--accent1), var(--accent2));
+    box-shadow: 0 6px 18px rgba(6,182,212,0.12);
+    font-weight:700;
+    font-size:20px;
+    color:white;
+  }
+
+  h1{
+    margin:0;
+    font-size:20px;
+    letter-spacing:0.2px;
+  }
+  p.lead{
+    margin:6px 0 18px 0;
+    color:var(--muted);
+    font-size:13px;
+  }
+
+  form{
+    display:grid;
+    gap:14px;
+  }
+
+  /* floating label inputs */
+  .field{
+    position:relative;
+  }
+  input {
+    width:100%;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.06);
+    padding:16px 14px 16px 46px;
+    border-radius:12px;
+    color: white;
+    outline:none;
+    font-size:14px;
+    transition: border-color .18s ease, box-shadow .18s ease, transform .12s ease;
+    box-shadow: inset 0 -2px 6px rgba(0,0,0,0.3);
+  }
+  input::placeholder{ color: transparent; } /* we use label instead */
+
+  label.floating{
+    position:absolute;
+    left:46px;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:13px;
+    color:var(--muted);
+    pointer-events:none;
+    transition: transform .15s ease, font-size .15s ease, top .15s ease, color .15s ease;
+    background:transparent;
+    padding:0 6px;
+  }
+
+  /* small icon on left */
+  .icon{
+    position:absolute;
+    left:12px;
+    top:50%;
+    transform:translateY(-50%);
+    width:20px;height:20px;
+    display:grid;place-items:center;
+    opacity:0.95;
+    color: rgba(255,255,255,0.9);
+  }
+
+  /* focus styles */
+  input:focus{
+    border-color: rgba(124,58,237,0.9);
+    box-shadow: 0 6px 20px rgba(124,58,237,0.08), 0 0 0 6px rgba(124,58,237,0.06);
+    transform: translateY(-1px);
+  }
+  input:focus + label.floating,
+  input:not(:placeholder-shown) + label.floating,
+  input[data-hasvalue="true"] + label.floating {
+    top:8px;
+    transform:none;
+    font-size:11px;
+    color: rgba(255,255,255,0.9);
+  }
+
+  /* password show toggle */
+  .pwd-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .toggle-pwd{
+    margin-left:auto;
+    background:transparent;
+    border: none;
+    color: var(--muted);
+    font-size:13px;
+    cursor:pointer;
+    padding:6px 8px;
+  }
+
+  /* submit */
+  .btn{
+    display:inline-grid;
+    place-items:center;
+    padding:12px 14px;
+    border-radius:12px;
+    border:0;
+    cursor:pointer;
+    background: linear-gradient(90deg,var(--accent1),var(--accent2));
+    color:white;
+    font-weight:600;
+    font-size:15px;
+    box-shadow: 0 6px 22px rgba(7,18,41,0.6), 0 6px 18px rgba(124,58,237,0.12);
+    transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+  }
+  .btn:active{ transform: translateY(1px) scale(.998); }
+  .row{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    justify-content:space-between;
+  }
+
+  .muted{
+    color:var(--muted);
+    font-size:13px;
+  }
+
+  .hr{
+    height:1px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.06));
+    border-radius:2px;
+    margin:8px 0 12px 0;
+  }
+
+  .remember{
+    display:flex;
+    gap:8px;
+    align-items:center;
+    font-size:13px;
+    color:var(--muted);
+  }
+
+  /* small helper text */
+  .note{
+    font-size:12px;
+    color: rgba(255,255,255,0.55);
+    margin-top:8px;
+  }
+
+  /* responsive */
+  @media (max-width:480px){
+    .login-wrap{ padding:18px; border-radius:14px; }
+    .logo{ width:48px; height:48px; font-size:18px; }
+  }
+</style>
+</head>
+<body>
+  <main class="login-wrap" role="main" aria-labelledby="login-heading">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">LC</div>
+      <div>
+        <h1 id="login-heading">Login to LaunchCode</h1>
+        <p class="lead">Welcome back — sign in to continue to your workspace.</p>
+      </div>
+    </div>
+
+    <form onsubmit="event.preventDefault(); alert('Logged (demo)');" autocomplete="on" novalidate>
+      <!-- Email -->
+      <div class="field">
+        <span class="icon" aria-hidden="true">📧</span>
+        <input id="email" name="email" type="email" required placeholder=" " oninput="this.setAttribute('data-hasvalue', this.value.length>0)">
+        <label for="email" class="floating">Email address</label>
+      </div>
+
+      <!-- Password -->
+      <div class="field">
+        <span class="icon" aria-hidden="true">🔒</span>
+        <input id="password" name="password" type="password" required placeholder=" " oninput="this.setAttribute('data-hasvalue', this.value.length>0)">
+        <label for="password" class="floating">Password</label>
+      </div>
+
+      <div class="row">
+        <label class="remember"><input type="checkbox" name="remember" aria-label="Remember me"> Remember me</label>
+        <a href="#" class="muted" style="text-decoration:none;color:var(--muted)">Forgot password?</a>
+      </div>
+
+      <div class="hr" aria-hidden="true"></div>
+
+      <button class="btn" type="submit">Sign in</button>
+
+      <p class="note">Don't have an account? <a href="#" style="color:inherit;text-decoration:underline">Create one</a></p>
+    </form>
+  </main>
+
+  <script>
+    /* Simple accessible enhancement:
+       - Make floating label behave when browser autofill fills fields (onload check).
+    */
+    window.addEventListener('DOMContentLoaded', ()=> {
+      document.querySelectorAll('input').forEach(inp=>{
+        if(inp.value && inp.value.length>0) inp.setAttribute('data-hasvalue','true');
+      });
+    });
+  </script>
+</body>
+</html>
